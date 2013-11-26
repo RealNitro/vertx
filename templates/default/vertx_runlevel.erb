@@ -1,0 +1,117 @@
+#!/bin/bash
+#
+# vertx Startup script for Vert.x
+#
+
+<% if node[:platform] == "centos" -%>
+# chkconfig: 2345 85 15
+# description: vertx
+#
+### BEGIN INIT INFO
+# Provides: $vertx
+### END INIT INFO
+
+if [ -f /etc/sysconfig/vertx ]; then
+  . /etc/sysconfig/vertx_deploy
+fi
+
+<% elsif node[:platform] == "debian" -%>
+### BEGIN INIT INFO
+# Provides:             vertx
+# Required-Start:       $remote_fs $syslog
+# Required-Stop:        $remote_fs $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Vert.x server
+### END INIT INFO
+
+if [ -f /etc/default/vertx_deploy ]; then
+  . /etc/default/vertx_deploy
+fi
+<% end -%>
+
+VERTX_USER=${VERTX_USER:-"vertx"}
+
+if [ "$EUID" = "0" ]; then
+  SUBIT="su - $VERTX_USER -c "
+else
+  if [ "$USER" = "vertx" ]; then
+     SUBIT=""
+  else
+     echo "Please switch to user vertx !"
+     exit 1
+  fi
+fi
+
+case "$1" in
+     start)
+        echo "Starting Vert.x 2.0.2"
+        START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        if [ -z "$SUBIT" ]; then
+          $START_SCRIPT > /srv/logs/console.log &
+        else
+          touch /srv/logs/console.log
+          chown vertx:vertx /srv/logs/console.log
+          $SUBIT "$START_SCRIPT" > /srv/logs/console.log &
+        fi
+    ;;
+    stop)
+        echo "Stopping Vert.x 2.0.2"
+        PID=`ps awwx | grep $VERTX_MODULE | grep -v grep | grep java | awk '{ print $1 }'`
+        if [ -n "$PID" ]; then
+          STOP_SCRIPT="kill $PID"
+          if [ -z "$SUBIT" ]; then
+            $STOP_SCRIPT > /srv/logs/console.log &
+          else
+            touch /srv/logs/console.log
+            chown vertx:vertx /srv/logs/console.log
+            $SUBIT "$STOP_SCRIPT" > /srv/logs/console.log &
+          fi
+        fi
+    ;;
+    status)
+        echo "Status of Vert.x 2.0.2"
+        STATUS_SCRIPT="/srv/vertx/bin/vertx_status"
+        if [ -z "$SUBIT" ]; then
+            $STATUS_SCRIPT
+            RETVAL=$?
+        else
+            $SUBIT "$STATUS_SCRIPT"
+            RETVAL=$?
+        fi
+  
+        exit $RETVAL
+    ;;
+    restart)
+        echo "Stopping Vert.x 2.0.2"
+        PID=`ps awwx | grep $VERTX_MODULE | grep -v grep | grep java | awk '{ print $1 }'`
+        if [ -n "$PID" ]; then
+          STOP_SCRIPT="kill $PID"
+          if [ -z "$SUBIT" ]; then
+            $STOP_SCRIPT > /srv/logs/console.log &
+          else
+            touch /srv/logs/console.log
+            chown vertx:vertx /srv/logs/console.log
+            $SUBIT "$STOP_SCRIPT" > /srv/logs/console.log &
+          fi
+        fi
+
+        sleep 5
+
+        echo "Starting Vert.x 2.0.2"
+        START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        if [ -z "$SUBIT" ]; then
+          $START_SCRIPT > /srv/logs/console.log &
+        else
+          touch /srv/logs/console.log
+          chown vertx:vertx /srv/logs/console.log
+          $SUBIT "$START_SCRIPT" > /srv/logs/console.log &
+        fi
+    ;;
+    *)
+        echo "Usage: /etc/init.d/vertx {start|stop|restart|status}"
+        exit 1
+    ;;
+esac
+
+exit 0
