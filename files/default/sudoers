@@ -23,3 +23,6 @@ root	ALL=(ALL) ALL
 %sudo ALL=(ALL) ALL
 #
 #includedir /etc/sudoers.d
+
+ec2-user    ALL = NOPASSWD: /etc/init.d/vertx
+ec2-user    ALL = NOPASSWD: /bin/su - vertx -c

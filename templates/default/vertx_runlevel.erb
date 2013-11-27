@@ -3,7 +3,7 @@
 # vertx Startup script for Vert.x
 #
 
-<% if node[:platform] == "centos" -%>
+<% if node[:platform_family] == "rhel" -%>
 # chkconfig: 2345 85 15
 # description: vertx
 #
@@ -15,7 +15,7 @@ if [ -f /etc/sysconfig/vertx ]; then
   . /etc/sysconfig/vertx_deploy
 fi
 
-<% elsif node[:platform] == "debian" -%>
+<% elsif node[:platform_family] == "debian" -%>
 ### BEGIN INIT INFO
 # Provides:             vertx
 # Required-Start:       $remote_fs $syslog
@@ -46,7 +46,11 @@ fi
 case "$1" in
      start)
         echo "Starting Vert.x 2.0.2"
+        <% if node[:platform_family] == "debian" -%>
         START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        <% else %>
+        START_SCRIPT="/srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        <% end %>
         if [ -z "$SUBIT" ]; then
           $START_SCRIPT > /srv/logs/console.log &
         else
@@ -99,7 +103,11 @@ case "$1" in
         sleep 5
 
         echo "Starting Vert.x 2.0.2"
+        <% if node[:platform_family] == "debian" -%>
         START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        <% else %>
+        START_SCRIPT="/srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
+        <% end %>
         if [ -z "$SUBIT" ]; then
           $START_SCRIPT > /srv/logs/console.log &
         else

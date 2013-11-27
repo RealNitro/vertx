@@ -9,7 +9,7 @@
 LOG_DIR="/srv/logs"
 VERTX_USER="vertx"
 
-<% if node[:platform] == "centos" -%>
+<% if node[:platform_family] == "rhel" -%>
 
 if [ -f /etc/sysconfig/vertx ]; then
   . /etc/sysconfig/vertx

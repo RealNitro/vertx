@@ -8,17 +8,27 @@
 include_recipe "java"
 include_recipe "ark"
 
-package "authbind" do
-  action :install
-end
-
-bash "configure_authbind" do
+case node['platform_family']
+when "rhel"
+  bash "update_rhel" do
   code <<-EOS
-  touch /etc/authbind/byport/80
-  chown vertx:vertx /etc/authbind/byport/80
-  chmod 755 /etc/authbind/byport/80
+    sudo yum -y update
   EOS
-  not_if {File.exists?("/etc/authbind/byport/80")}
+end
+when "debian"
+  package "authbind" do
+    action :install
+  end
+
+  bash "configure_authbind" do
+    code <<-EOS
+    touch /etc/authbind/byport/80
+    chown vertx:vertx /etc/authbind/byport/80
+    chmod 755 /etc/authbind/byport/80
+    EOS
+    not_if {File.exists?("/etc/authbind/byport/80")}
+  end
+
 end
 
 ark "vertx" do
@@ -43,7 +53,7 @@ end
   end
 end
 
-case node['platform']
+case node['platform_family']
 when "debian"
   template "/etc/default/vertx" do
     source "vertx_config.erb"
@@ -52,7 +62,7 @@ when "debian"
     group "vertx"
     not_if "test -f /etc/default/vertx"
   end
-when "centos"
+when "rhel"
   template "/etc/sysconfig/vertx" do
     source "vertx_config.erb"
     mode "0644"
@@ -62,7 +72,7 @@ when "centos"
   end
 end
 
-case node['platform']
+case node['platform_family']
 when "debian"
   template "/etc/default/vertx_deploy" do
     source "vertx_deploy.erb"
@@ -71,7 +81,7 @@ when "debian"
     group "vertx"
     not_if "test -f /etc/default/vertx_deploy"
   end
-when "centos"
+when "rhel"
   template "/etc/sysconfig/vertx_deploy" do
     source "vertx_deploy.erb"
     mode "0644"
