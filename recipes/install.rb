@@ -16,6 +16,7 @@ when "rhel"
   EOS
 end
 when "debian"
+  
   package "authbind" do
     action :install
   end
@@ -28,7 +29,6 @@ when "debian"
     EOS
     not_if {File.exists?("/etc/authbind/byport/80")}
   end
-
 end
 
 ark "vertx" do
