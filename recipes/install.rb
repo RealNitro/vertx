@@ -53,42 +53,29 @@ end
   end
 end
 
-case node['platform_family']
-when "debian"
-  template "/etc/default/vertx" do
-    source "vertx_config.erb"
-    mode "0644"
-    owner "vertx"
-    group "vertx"
-    not_if "test -f /etc/default/vertx"
-  end
-when "rhel"
-  template "/etc/sysconfig/vertx" do
-    source "vertx_config.erb"
-    mode "0644"
-    owner "vertx"
-    group "vertx"
-    not_if "test -f /etc/sysconfig/vertx"
-  end
-end
+config_vertx="/etc/default/vertx"
+config_vertx_deploy="/etc/default/vertx"
 
 case node['platform_family']
-when "debian"
-  template "/etc/default/vertx_deploy" do
-    source "vertx_deploy.erb"
-    mode "0644"
-    owner "vertx"
-    group "vertx"
-    not_if "test -f /etc/default/vertx_deploy"
-  end
 when "rhel"
-  template "/etc/sysconfig/vertx_deploy" do
-    source "vertx_deploy.erb"
-    mode "0644"
-    owner "vertx"
-    group "vertx"
-    not_if "test -f /etc/sysconfig/vertx_deploy"
-  end
+  config_vertx="/etc/sysconfig/vertx"
+  config_vertx_deploy="/etc/sysconfig/vertx_deploy"
+end
+
+template config_vertx do
+  source "vertx_config.erb"
+  mode "0644"
+  owner "vertx"
+  group "vertx"
+  not_if {File.exists?(config_vertx)} 
+end
+
+template config_vertx_deploy do
+  source "vertx_deploy.erb"
+  mode "0644"
+  owner "vertx"
+  group "vertx"
+  not_if {File.exists?(config_vertx_deploy)} 
 end
 
 template "/etc/init.d/vertx" do
