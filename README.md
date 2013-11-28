@@ -1,45 +1,29 @@
-vertx Cookbook
+Description
 ==============
-TODO: Enter the cookbook description here.
-
-e.g.
-This cookbook makes your favorite breakfast sandwhich.
+This cookbook installs Vert.x. It defaults to installing Oracle JDK 7, but it can also install OpenJDK. 
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+Chef 0.10.10+ and Ohai 6.10+ for `platform_family` use.
 
-e.g.
-#### packages
-- `toaster` - vertx needs toaster to brown your bagel.
+## Platform
+* Debian, Ubuntu
+* CentOS, Red Hat, Fedora, Amazon
+
 
 Attributes
 ----------
-TODO: List you cookbook attributes here.
+See `attributes/default.rb` for default values.
 
-e.g.
-#### vertx::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['vertx']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+* `node[:vertx][:version]` - Vert.x version to install, defaults to `'2.0.2'`
+* `node[:vertx][:home]` - Default location of Vert.x, defaults to `'/srv/vertx'`
+* `node[:vertx][:url]` - Download url of Vert.x, defaults to `'http://dl.bintray.com/vertx/downloads/'`
+
 
 Usage
 -----
 #### vertx::default
-TODO: Write usage instructions for each cookbook.
 
-e.g.
 Just include `vertx` in your node's `run_list`:
 
 ```json
@@ -53,9 +37,6 @@ Just include `vertx` in your node's `run_list`:
 
 Contributing
 ------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
 3. Write you change
@@ -65,4 +46,20 @@ e.g.
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+
+* Author: Sascha Möllering (<sascha.moellering@zanox.com>)
+
+Copyright: 2008-2013, ZANOX.de AG
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
