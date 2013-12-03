@@ -54,7 +54,7 @@ end
 end
 
 config_vertx="/etc/default/vertx"
-config_vertx_deploy="/etc/default/vertx"
+config_vertx_deploy="/etc/default/vertx_deploy"
 
 case node['platform_family']
 when "rhel"
