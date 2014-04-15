@@ -1,6 +1,6 @@
 Description
 ==============
-This cookbook installs Vert.x. It defaults to installing Oracle JDK 7, but it can also install OpenJDK. 
+This cookbook installs Vert.x. It defaults to installing Oracle JDK 8, but it can also install OpenJDK. 
 
 Requirements
 ------------
@@ -15,9 +15,9 @@ Attributes
 ----------
 See `attributes/default.rb` for default values.
 
-* `node[:vertx][:version]` - Vert.x version to install, defaults to `'2.0.2'`
+* `node[:vertx][:version]` - Vert.x version to install, defaults to `'2.1.0'`
 * `node[:vertx][:home]` - Default location of Vert.x, defaults to `'/srv/vertx'`
-* `node[:vertx][:url]` - Download url of Vert.x, defaults to `'http://dl.bintray.com/vertx/downloads/'`
+* `node[:vertx][:url]` - Download url of Vert.x, defaults to `'http://dl.bintray.com/vertx/downloads/vert.x-2.1RC3.tar.gz'`
 
 
 Usage
