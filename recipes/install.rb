@@ -32,7 +32,7 @@ when "debian"
 end
 
 ark "vertx" do
-  url node[:vertx][:url] + "vert.x-" + node[:vertx][:version] + "-final.zip"
+  url node[:vertx][:url]
   home_dir node[:vertx][:home]
   version node[:vertx][:version]
   append_env_path true
@@ -41,16 +41,22 @@ end
 
 bash "configure_vertx" do
   code <<-EOS
-  chown -R vertx:vertx /usr/local/vertx-2.0.2
+  chown -R vertx:vertx /usr/local/vertx-2.1.0
   EOS
 end
 
-%w{ logs deploy deploy/packages }.each do |dir|
+%w{ log deploy deploy/packages }.each do |dir|
   directory "/srv/#{dir}" do
     owner "vertx"
     group "vertx"
     recursive true
   end
+end
+
+directory "/var/www/monitor" do
+  owner "vertx"
+  group "vertx"
+  recursive true
 end
 
 config_vertx="/etc/default/vertx"

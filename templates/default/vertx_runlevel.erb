@@ -43,38 +43,50 @@ else
   fi
 fi
 
+STATUS_FILE=/var/www/monitor/status.txt
+
 case "$1" in
      start)
-        echo "Starting Vert.x 2.0.2"
+        echo "Starting Vert.x 2.1.0"
+        if [ -z "$VERTX_MODULE" ]; then
+          exit 0
+        fi
         <% if node[:platform_family] == "debian" -%>
         START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
         <% else %>
         START_SCRIPT="/srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
         <% end %>
         if [ -z "$SUBIT" ]; then
-          $START_SCRIPT > /srv/logs/console.log &
+          $START_SCRIPT > /srv/log/console.log &
+          echo ONLINE > $STATUS_FILE
         else
-          touch /srv/logs/console.log
-          chown vertx:vertx /srv/logs/console.log
-          $SUBIT "$START_SCRIPT" > /srv/logs/console.log &
+          touch /srv/log/console.log
+          chown vertx:vertx /srv/log/console.log
+          $SUBIT "$START_SCRIPT" > /srv/log/console.log &
+          $SUBIT "echo ONLINE > $STATUS_FILE"
         fi
     ;;
     stop)
-        echo "Stopping Vert.x 2.0.2"
+        echo "Stopping Vert.x 2.1.0"
+        if [ -z "$VERTX_MODULE" ]; then
+          exit 0
+        fi
         PID=`ps awwx | grep $VERTX_MODULE | grep -v grep | grep java | awk '{ print $1 }'`
         if [ -n "$PID" ]; then
           STOP_SCRIPT="kill $PID"
           if [ -z "$SUBIT" ]; then
-            $STOP_SCRIPT > /srv/logs/console.log &
+            echo OFFLINE > $STATUS_FILE
+            $STOP_SCRIPT > /srv/log/console.log &
           else
-            touch /srv/logs/console.log
-            chown vertx:vertx /srv/logs/console.log
-            $SUBIT "$STOP_SCRIPT" > /srv/logs/console.log &
+            touch /srv/log/console.log
+            chown vertx:vertx /srv/log/console.log
+            $SUBIT "echo OFFLINE > $STATUS_FILE"
+            $SUBIT "$STOP_SCRIPT" > /srv/log/console.log &
           fi
         fi
     ;;
     status)
-        echo "Status of Vert.x 2.0.2"
+        echo "Status of Vert.x 2.1.0"
         STATUS_SCRIPT="/srv/vertx/bin/vertx_status"
         if [ -z "$SUBIT" ]; then
             $STATUS_SCRIPT
@@ -87,37 +99,47 @@ case "$1" in
         exit $RETVAL
     ;;
     restart)
-        echo "Stopping Vert.x 2.0.2"
+        echo "Stopping Vert.x 2.1.0"
+        if [ -z "$VERTX_MODULE" ]; then
+          exit 0
+        fi
         PID=`ps awwx | grep $VERTX_MODULE | grep -v grep | grep java | awk '{ print $1 }'`
         if [ -n "$PID" ]; then
           STOP_SCRIPT="kill $PID"
           if [ -z "$SUBIT" ]; then
-            $STOP_SCRIPT > /srv/logs/console.log &
+            echo OFFLINE > $STATUS_FILE
+            $STOP_SCRIPT > /srv/log/console.log &
           else
-            touch /srv/logs/console.log
-            chown vertx:vertx /srv/logs/console.log
-            $SUBIT "$STOP_SCRIPT" > /srv/logs/console.log &
+            touch /srv/log/console.log
+            chown vertx:vertx /srv/log/console.log
+            $SUBIT "echo OFFLINE > $STATUS_FILE"
+            $SUBIT "$STOP_SCRIPT" > /srv/log/console.log &
           fi
         fi
 
         sleep 5
 
-        echo "Starting Vert.x 2.0.2"
+        echo "Starting Vert.x 2.1.0"
+        if [ -z "$VERTX_MODULE" ]; then
+          exit 0
+        fi
         <% if node[:platform_family] == "debian" -%>
         START_SCRIPT="authbind /srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
         <% else %>
         START_SCRIPT="/srv/vertx/bin/vertx runzip /srv/deploy/packages/$VERTX_MODULE"
         <% end %>
         if [ -z "$SUBIT" ]; then
-          $START_SCRIPT > /srv/logs/console.log &
+          $START_SCRIPT > /srv/log/console.log &
+          echo ONLINE > $STATUS_FILE
         else
-          touch /srv/logs/console.log
-          chown vertx:vertx /srv/logs/console.log
-          $SUBIT "$START_SCRIPT" > /srv/logs/console.log &
+          touch /srv/log/console.log
+          chown vertx:vertx /srv/log/console.log
+          $SUBIT "$START_SCRIPT" > /srv/log/console.log &
+          $SUBIT "echo ONLINE > $STATUS_FILE"
         fi
     ;;
     *)
-        echo "Usage: /etc/init.d/vertx {start|stop|restart|status}"
+        echo "Usage: /etc/init.d/vertx {start|stop|restart}"
         exit 1
     ;;
 esac
