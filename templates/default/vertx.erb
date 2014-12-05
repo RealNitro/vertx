@@ -6,7 +6,7 @@
 ##
 ##############################################################################
 
-LOG_DIR="<%= node[:log_dir] %>"
+LOG_DIR="<%= node[:vertx][:log_dir] %>"
 VERTX_USER="vertx"
 
 <% if node[:platform_family] == "rhel" -%>
@@ -153,7 +153,7 @@ cd "`dirname \"$PRG\"`/.."
 VERTX_HOME="`pwd -P`"
 cd "$SAVED"
 
-CLASSPATH=${CLASSPATH}:${VERTX_HOME}/conf:${VERTX_HOME}/lib/*:<%= node[:dir] %>/deploy/packages/*
+CLASSPATH=${CLASSPATH}:${VERTX_HOME}/conf:${VERTX_HOME}/lib/*:<%= node[:vertx][:home] %>/deploy/packages/*
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
