@@ -47,9 +47,8 @@ Contributing
 License and Authors
 -------------------
 
-* Author: Sascha Möllering (<sascha.moellering@zanox.com>)
-
-Copyright: 2013, ZANOX.de AG
+* Author: Sander van de Graaf (<sander.vandegraaf@unitt.com>)
+* Original Author: Sascha Möllering (<sascha.moellering@zanox.com>)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
