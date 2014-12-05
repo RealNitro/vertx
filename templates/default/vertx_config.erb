@@ -11,3 +11,6 @@ JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.authenticate=true"
 JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.ssl=false"
 JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.password.file=<%= node[:vertx][:home] %>/conf/jmxremote.password"
 JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.access.file=<%= node[:vertx][:home] %>/conf/jmxremote.access"
+<% node[:vertx][:java_opts].each do |option| %>
+JAVA_OPTS="$JAVA_OPTS <%= option %>"
+<% end %>

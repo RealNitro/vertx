@@ -46,7 +46,7 @@ bash "configure_vertx" do
 end
 
 %w{ log deploy deploy/packages }.each do |dir|
-  directory "/srv/#{dir}" do
+  directory "node[:vertx]/#{dir}" do
     owner "vertx"
     group "vertx"
     recursive true

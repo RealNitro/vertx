@@ -13,3 +13,4 @@ default[:vertx][:pid_file]      = '/var/run/vertx.pid'
 default[:vertx][:status_file]   = '/var/www/monitor/status.txt'
 default[:vertx][:log_dir]       = '/srv/log/'
 default[:vertx][:jmx_password]  = 'change_me_please'
+default[:vertx][:java_opts]     = []
