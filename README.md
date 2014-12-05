@@ -15,9 +15,9 @@ Attributes
 ----------
 See `attributes/default.rb` for default values.
 
-* `node[:vertx][:version]` - Vert.x version to install, defaults to `'2.1.0'`
+* `node[:vertx][:version]` - Vert.x version to install, defaults to `'2.1.5'`
 * `node[:vertx][:home]` - Default location of Vert.x, defaults to `'/srv/vertx'`
-* `node[:vertx][:url]` - Download url of Vert.x, defaults to `'http://dl.bintray.com/vertx/downloads/vert.x-2.1RC3.tar.gz'`
+* `node[:vertx][:url]` - Download url of Vert.x, defaults to `'http://dl.bintray.com/vertx/downloads/vert.x-2.1.5.tar.gz'`
 
 
 Usage
