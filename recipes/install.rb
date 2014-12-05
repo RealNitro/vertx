@@ -41,7 +41,7 @@ end
 
 bash "configure_vertx" do
   code <<-EOS
-  chown -R vertx:vertx /usr/local/vertx-2.1.0
+  chown -R vertx:vertx /usr/local/vertx-*
   EOS
 end
 
